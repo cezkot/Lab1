@@ -4,6 +4,7 @@ import java.util.Scanner;
 public class Game {
 
     private Player player;
+    Player computer = new Player("Komputer");
     private Scanner scanner = new Scanner(System.in);
     private Random random = new Random();
 
@@ -106,6 +107,7 @@ public class Game {
 
         }
         System.out.println("Komputer zgadl w " + attempts + " probach");
+        computer.savePlayerScore(attempts);
 
         //DODAĆ ZAPISYWANIE WYNIKOW
 
@@ -158,8 +160,10 @@ public class Game {
         }
         if (!turn){
             System.out.println("Gracz zgadł pierwszy w " + attempsPlayer + " probach");
+            player.savePlayerScore(attempsPlayer);
         }else {
             System.out.println("komputer zgadł pierwszy w " + attempsPlayer + " probach");
+            computer.savePlayerScore(attempsComputer);
 
         }
     }

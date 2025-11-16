@@ -65,7 +65,7 @@ public class Player {
             }
 
             scan.close();
-            System.out.println("Wczytano dane istniejącego gracza!");
+            System.out.println("Wyniki gracza : " + this.nickname);
             if (bestScore == 999999999 || bestScore == -1) {
                 System.out.println("Brak poprzednych wynikow");
             } else {
@@ -100,3 +100,5 @@ public class Player {
 
     }
 }
+
+
