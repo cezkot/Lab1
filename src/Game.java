@@ -113,5 +113,71 @@ public class Game {
 
     //Komputer losuje gracz i koputer zgaduja na zmiane
     private void gameMixed(int gameDiff) {
+        boolean turn = random.nextBoolean();// True = gracz False = komputer
+
+        int numberRange = gameNumberRange(gameDiff);
+        int number = random.nextInt(numberRange + 1);
+        int playerGuess;
+        int computerGuess;
+        int attempsPlayer = 0;
+        int attempsComputer = 0;
+        int computerBound = numberRange;
+        int computerOrigin = 0;
+        boolean gameFlag = true;
+        while (gameFlag) {
+            if (turn) {
+                System.out.println("Podaj liczbe");
+                playerGuess = scanner.nextInt();
+                if (playerGuess > number) {
+                    System.out.println("Za duzo!");
+                } else if (playerGuess < number) {
+                    System.out.println("Za malo!");
+                } else {
+                    System.out.println("Brawo! Zgadłeś liczbę!");
+                    gameFlag = false;
+                }
+                attempsPlayer++;
+                turn = !turn;
+            }
+            else {
+                computerGuess = random.nextInt(computerOrigin, computerBound + 1);
+                if (computerGuess > number) {
+                    computerBound = computerGuess;
+                    System.out.println("Komputer wybrał:" + computerGuess + " Jest to za duzo teraz szuka w zakresie: " + computerOrigin + "-" + computerBound);
+                } else if (computerGuess < number) {
+                    computerOrigin = computerGuess;
+                    System.out.println("Komputer wybrał:" + computerGuess + " Jest to za malo teraz szuka w zakresie: " + computerOrigin + "-" + computerBound);
+                }
+                else {
+                    System.out.println("Komputer zgadł");
+                    gameFlag = false;
+                }
+                attempsComputer++;
+                turn = !turn;
+            }
+        }
+        if (!turn){
+            System.out.println("Gracz zgadł pierwszy w " + attempsPlayer + " probach");
+        }else {
+            System.out.println("komputer zgadł pierwszy w " + attempsPlayer + " probach");
+
+        }
+    }
+
+    // DOKOŃCZ wyodrebnienie zgadywania do późniejsze gry wieloosobowej
+    private int gamePlayerGuessing(int number) {
+        System.out.println("Podaj liczbe: ");
+        System.out.println(number);
+        int guess = scanner.nextInt();
+
+        if (guess > number) {
+            System.out.println("Za duzo!");
+        } else if (guess < number) {
+            System.out.println("Za malo!");
+        } else {
+            System.out.println("Brawo! Zgadłeś liczbę!");
+        }
+
+        return guess;
     }
 }
