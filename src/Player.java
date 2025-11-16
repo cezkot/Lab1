@@ -8,6 +8,11 @@ import java.util.Scanner;
 public class Player {
     private String nickname;
     private int bestScore = 999999999;
+    int easy = 999999999;
+    int medium = 999999999;
+    int hard = 999999999;
+    int win = 0;
+    int lose = 0;
 
     public Player(String nickname) {
         this.nickname = nickname;
@@ -21,32 +26,92 @@ public class Player {
     public int getBestScore() {
         return bestScore;
     }
+    public int getEasy(){
+        return easy;
+    }
+    public int getMedium(){
+        return medium;
+    }
+    public int getHard(){
+        return hard;
+    }
+    public int getWin(){
+        return win;
+    }
+    public int getLose(){
+        return lose;
+    }
 
-    public void savePlayerScore(int score) {
+    public void savePlayerScore(int score, int mode) {
         Path path = Paths.get("./" + nickname + ".txt");
         File file = new File(path.toString());
+
+        int bestScore = 999999999;
+
+
+
+
         try {
 
+            // Jeśli pliku nie ma – utwórz
             if (!file.exists()) {
                 Files.createFile(path);
             }
 
-            if (score < bestScore) {
-                bestScore = score;
+            // Aktualizacja odpowiedniej kategorii
+            switch (mode) {
+                case 1: // EASY
+                    if (score < easy) {
+                        easy = score;
+                    }
+                    break;
+
+                case 2: // MEDIUM
+                    if (score < medium) {
+                        medium = score;
+                    }
+                    break;
+
+                case 3: // HARD
+                    if (score < hard) {
+                        hard = score;
+                    }
+                    break;
+                case 4:
+                    win = win + 1;
+                    break;
+                case 5:
+                    lose = lose + 1;
+                    break;
+
+                default:
+                    System.out.println("Nieznany tryb gry!");
             }
 
+            // Best score (najlepszy z wszystkich)
+            bestScore = Math.min(bestScore, score);
+
+            // Zapis do pliku
             PrintWriter pw = new PrintWriter(file);
             pw.println("nick=" + nickname);
             pw.println("bestScore=" + bestScore);
+
+            pw.println("single");
+            pw.println("easy=" + (easy == 999999999 ? 999999999 : easy));
+            pw.println("medium=" + (medium == 999999999 ? 999999999 : medium));
+            pw.println("hard=" + (hard == 999999999 ? 999999999 : hard));
+
+            pw.println("multiplayer");
+            pw.println("win=" + win);
+            pw.println("lose=" + lose);
+
             pw.close();
 
-        } catch (FileAlreadyExistsException e) {
-            System.err.format("file named %s" + " already exists%n", path);
         } catch (IOException e) {
-            System.err.format("createFile error: %s%n", e);
+            System.err.println("Błąd: " + e.getMessage());
         }
-
     }
+
 
     private void loadPlayerScore() {
         try {
@@ -62,6 +127,22 @@ public class Player {
                 if (line.startsWith("bestScore=")) {
                     bestScore = Integer.parseInt(line.replace("bestScore=", ""));
                 }
+                if (line.startsWith("easy=")) {
+                    easy = Integer.parseInt(line.replace("easy=", ""));
+                }
+                if (line.startsWith("medium=")) {
+                    medium = Integer.parseInt(line.replace("medium=", ""));
+                }
+                if (line.startsWith("hard=")) {
+                    hard = Integer.parseInt(line.replace("hard=", ""));
+                }
+                if (line.startsWith("win=")) {
+                    win = Integer.parseInt(line.replace("win=", ""));
+                }
+                if (line.startsWith("lose=")) {
+                    lose = Integer.parseInt(line.replace("lose=", ""));
+                }
+
             }
 
             scan.close();

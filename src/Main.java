@@ -20,7 +20,8 @@ void main() {
 
         System.out.println("1: Zacznij gre");
         System.out.println("2:Zresetuj wynik");
-        System.out.println("3: Wyjscie");
+        System.out.println("3: Statystyki");
+        System.out.println("4: Wyjscie");
         int GameFlag = scanner.nextInt();
 
         switch (GameFlag) {
@@ -35,12 +36,20 @@ void main() {
                 System.out.println("2: 0-10000");
                 System.out.println("3: 0-1000000");
                 gameDiff = scanner.nextInt();
-                game.start(gameType,gameDiff);
+                game.start(gameType, gameDiff);
                 break;
             case 2:
                 player.resetPlayerScore();
                 break;
             case 3:
+                System.out.println("Statystyki");
+                System.out.println("easy= " + player.getEasy());
+                System.out.println("medium= " + player.getMedium());
+                System.out.println("hard= " + player.getHard());
+                System.out.println("multiplayer");
+                System.out.println("win= " + player.getWin());
+                System.out.println("lose= " + player.getLose());
+            case 4:
                 System.out.println("Koniec gry.");
                 gameFlag = false;
                 break;

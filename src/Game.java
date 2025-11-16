@@ -73,7 +73,7 @@ public class Game {
         }
 
         System.out.println("Udalo ci sie w " + attempts + " podejsciach");
-        player.savePlayerScore(attempts);
+        player.savePlayerScore(attempts,gameDiff);
         System.out.println("Najlepszy wynik: " + player.getBestScore());
 
     }
@@ -107,7 +107,7 @@ public class Game {
 
         }
         System.out.println("Komputer zgadl w " + attempts + " probach");
-        computer.savePlayerScore(attempts);
+        computer.savePlayerScore(attempts,gameDiff);
 
         //DODAĆ ZAPISYWANIE WYNIKOW
 
@@ -160,10 +160,13 @@ public class Game {
         }
         if (!turn){
             System.out.println("Gracz zgadł pierwszy w " + attempsPlayer + " probach");
-            player.savePlayerScore(attempsPlayer);
+            player.savePlayerScore(attempsPlayer,4);
+            computer.savePlayerScore(attempsComputer,5);
         }else {
             System.out.println("komputer zgadł pierwszy w " + attempsPlayer + " probach");
-            computer.savePlayerScore(attempsComputer);
+            computer.savePlayerScore(attempsComputer,4);
+            player.savePlayerScore(attempsPlayer,5);
+
 
         }
     }
