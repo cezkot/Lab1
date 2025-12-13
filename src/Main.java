@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 
 void main() {
@@ -30,13 +31,33 @@ void main() {
                 System.out.println("1: normalna");
                 System.out.println("2: odwrotna");
                 System.out.println("3: mieszana");
+                System.out.println("4: multiplayer");
                 gameType = scanner.nextInt();
                 System.out.println("Podaj poziom trudnosci");
                 System.out.println("1: 0-100");
                 System.out.println("2: 0-10000");
                 System.out.println("3: 0-1000000");
                 gameDiff = scanner.nextInt();
-                game.start(gameType, gameDiff);
+                if(gameType == 4)
+                {
+                    List<Player> playerList = new ArrayList<>();
+                    System.out.println("Ile ma grać graczy");
+                    int playerCount = scanner.nextInt();
+                    scanner.nextLine();
+                    for(int i = 0; i<playerCount;i++)
+                    {
+                        System.out.println("Podaj nick: ");
+                        String nicknameMulti = scanner.nextLine();
+                        playerList.add(new Player(nicknameMulti));
+                    }
+                    Game gameMulti = new Game(playerList);
+                    gameMulti.start(gameType,gameDiff);
+                }
+                else
+                {
+                    game.start(gameType, gameDiff);
+                }
+
                 break;
             case 2:
                 player.resetPlayerScore();
@@ -49,6 +70,7 @@ void main() {
                 System.out.println("multiplayer");
                 System.out.println("win= " + player.getWin());
                 System.out.println("lose= " + player.getLose());
+                break;
             case 4:
                 System.out.println("Koniec gry.");
                 gameFlag = false;

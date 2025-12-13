@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -5,11 +6,16 @@ public class Game {
 
     private Player player;
     Player computer = new Player("Komputer");
+    List<Player> playerList;
     private Scanner scanner = new Scanner(System.in);
     private Random random = new Random();
 
     public Game(Player player) {
         this.player = player;
+    }
+
+    public Game(List<Player> playerList){
+        this.playerList = playerList;
     }
 
     public void start(int gameType, int gameDiff) {
@@ -22,6 +28,9 @@ public class Game {
                 break;
             case 3:
                 gameMixed(gameDiff);
+                break;
+            case 4:
+                multiplayerGame(gameDiff);
         }
     }
 
@@ -59,17 +68,8 @@ public class Game {
         int attempts = 0;
 
         while (number != guess) {
-            System.out.println("Podaj liczbe: ");
-            System.out.println(number);
-            guess = scanner.nextInt();
+            guess = gamePlayerGuessing(number);
             attempts++;
-            if (guess > number) {
-                System.out.println("Za duzo!");
-            } else if (guess < number) {
-                System.out.println("Za malo!");
-            } else {
-                System.out.println("Brawo! Zgadłeś liczbę!");
-            }
         }
 
         System.out.println("Udalo ci sie w " + attempts + " podejsciach");
@@ -108,9 +108,6 @@ public class Game {
         }
         System.out.println("Komputer zgadl w " + attempts + " probach");
         computer.savePlayerScore(attempts,gameDiff);
-
-        //DODAĆ ZAPISYWANIE WYNIKOW
-
     }
 
     //Komputer losuje gracz i koputer zgaduja na zmiane
@@ -129,15 +126,11 @@ public class Game {
         while (gameFlag) {
             if (turn) {
                 System.out.println("Podaj liczbe");
-                playerGuess = scanner.nextInt();
-                if (playerGuess > number) {
-                    System.out.println("Za duzo!");
-                } else if (playerGuess < number) {
-                    System.out.println("Za malo!");
-                } else {
-                    System.out.println("Brawo! Zgadłeś liczbę!");
-                    gameFlag = false;
-                }
+                playerGuess = gamePlayerGuessing(number);
+               if(playerGuess == number)
+               {
+                   gameFlag = false;
+               }
                 attempsPlayer++;
                 turn = !turn;
             }
@@ -171,7 +164,44 @@ public class Game {
         }
     }
 
-    // DOKOŃCZ wyodrebnienie zgadywania do późniejsze gry wieloosobowej
+    public void multiplayerGame(int gameDiff) {
+        boolean nextGame =true;
+                while(nextGame) {
+                    int numberRange = gameNumberRange(gameDiff);
+                    int number = random.nextInt(numberRange + 1);
+
+                    boolean win = false;
+                    while (!win) {
+                        for (Player p : playerList) {
+                            System.out.println(p.getNickname() + " zgaduje:");
+                            int guess = gamePlayerGuessing(number);
+                            if (guess == number) {
+                                System.out.println("Zwycięzca: " + p.getNickname());
+
+                                win = true;
+                                Player winner = p;
+                                for (Player playerSave : playerList) {
+                                    if (playerSave.equals(winner)) {
+                                        playerSave.savePlayerScore(0, 4);
+                                    } else {
+                                        playerSave.savePlayerScore(0, 5);
+                                    }
+                                }
+                                System.out.println("Kolejna gra ?\n 1.tak\n 2.nie");
+                                nextGame = switch (scanner.nextInt()) {
+                                    case 1 -> true;
+                                    case 2 -> false;
+                                    default -> false;
+                                };
+                                break;
+                            }
+                        }
+
+                    }
+                }
+    }
+
+    //Wyodrebniona funkcja która pokazuje czy liczba jest mniejsza czy wieksza itd.
     private int gamePlayerGuessing(int number) {
         System.out.println("Podaj liczbe: ");
         System.out.println(number);
