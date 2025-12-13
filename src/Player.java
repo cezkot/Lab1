@@ -11,6 +11,7 @@ public class Player {
     int easy = 999999999;
     int medium = 999999999;
     int hard = 999999999;
+    int custom = 999999999;
     int win = 0;
     int lose = 0;
 
@@ -35,6 +36,9 @@ public class Player {
     public int getHard(){
         return hard;
     }
+    public int getCustom() {
+        return custom;
+    }
     public int getWin(){
         return win;
     }
@@ -48,11 +52,7 @@ public class Player {
 
         int bestScore = 999999999;
 
-
-
-
         try {
-
             // Jeśli pliku nie ma – utwórz
             if (!file.exists()) {
                 Files.createFile(path);
@@ -78,9 +78,14 @@ public class Player {
                     }
                     break;
                 case 4:
-                    win = win + 1;
+                    if (score < custom) {
+                        custom = score;
+                    }
                     break;
                 case 5:
+                    win = win + 1;
+                    break;
+                case 6:
                     lose = lose + 1;
                     break;
 
@@ -100,6 +105,7 @@ public class Player {
             pw.println("easy=" + (easy == 999999999 ? 999999999 : easy));
             pw.println("medium=" + (medium == 999999999 ? 999999999 : medium));
             pw.println("hard=" + (hard == 999999999 ? 999999999 : hard));
+            pw.println("custom=" + (custom == 999999999 ? 999999999 : custom));
 
             pw.println("multiplayer");
             pw.println("win=" + win);
@@ -135,6 +141,9 @@ public class Player {
                 }
                 if (line.startsWith("hard=")) {
                     hard = Integer.parseInt(line.replace("hard=", ""));
+                }
+                if (line.startsWith("custom=")) {
+                    custom = Integer.parseInt(line.replace("custom", ""));
                 }
                 if (line.startsWith("win=")) {
                     win = Integer.parseInt(line.replace("win=", ""));

@@ -37,6 +37,7 @@ void main() {
                 System.out.println("1: 0-100");
                 System.out.println("2: 0-10000");
                 System.out.println("3: 0-1000000");
+                System.out.println("4: Wlasny zakres");
                 gameDiff = scanner.nextInt();
                 if(gameType == 4)
                 {
@@ -67,6 +68,7 @@ void main() {
                 System.out.println("easy= " + player.getEasy());
                 System.out.println("medium= " + player.getMedium());
                 System.out.println("hard= " + player.getHard());
+                System.out.println("custom= " + player.getCustom());
                 System.out.println("multiplayer");
                 System.out.println("win= " + player.getWin());
                 System.out.println("lose= " + player.getLose());

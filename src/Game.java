@@ -35,21 +35,27 @@ public class Game {
     }
 
     //Przyjmuje poziom trudnosci i zwraca liczbe która jest koncem zakresu zgadywania
-    private int gameNumberRange(int gameDiff) {
-        int numberRange;
+    private int[] gameNumberRange(int gameDiff) {
+        int[] numberRange= {0,100};
 
         switch (gameDiff) {
             case 1:
-                numberRange = 100;
+                numberRange[1] = 100;
                 break;
             case 2:
-                numberRange = 10000;
+                numberRange[1] = 10000;
                 break;
             case 3:
-                numberRange = 1000000;
+                numberRange[1] = 1000000;
+                break;
+            case 4:
+                System.out.println("Podaj dolny zakres");
+                numberRange[0] = scanner.nextInt();
+                System.out.println("Podaj gorny zakres");
+                numberRange[1] = scanner.nextInt();
                 break;
             default:
-                numberRange = 100;
+                numberRange[1] = 100;
                 break;
         }
 
@@ -59,11 +65,11 @@ public class Game {
     //Komputer losuje gracz zgaduje
     private void gameNormal(int gameDiff) {
 
-        int numberRange = gameNumberRange(gameDiff);
+        int[] numberRange = gameNumberRange(gameDiff);
 
-        System.out.println("Zgadnij liczbe od 0-" + numberRange);
+        System.out.println("Zgadnij liczbe od " + numberRange[0] + "-"+ numberRange[1]);
 
-        int number = random.nextInt(numberRange + 1);
+        int number = random.nextInt(numberRange[0],numberRange[1]);
         int guess = -1;
         int attempts = 0;
 
@@ -80,19 +86,19 @@ public class Game {
 
     //Gracz losuje komputer zgaduje
     private void gameReverse(int gameDiff) {
-        int numberRange = gameNumberRange(gameDiff);
-        System.out.println("Podaj liczbe z zakresu 0-" + numberRange);
+        int[] numberRange = gameNumberRange(gameDiff);
+        System.out.println("Podaj liczbe od " + numberRange[0] + "-"+ numberRange[1]);
         int number = -1;
 
-        while (number <= 0 || number >= numberRange) {
+        while (number <= numberRange[0] || number >= numberRange[1]) {
             number = scanner.nextInt();
-            if (number < 0 || number > numberRange) {
+            if (number < numberRange[0] || number > numberRange[1]) {
                 System.out.println("Podana liczba jest poza zakresem");
             }
         }
         int computerGuees = -1;
-        int bound = numberRange;
-        int origin = 0;
+        int bound = numberRange[1];
+        int origin = numberRange[0];
         int attempts = 0;
         while (computerGuees != number) {
             computerGuees = random.nextInt(origin, bound + 1);
@@ -114,14 +120,14 @@ public class Game {
     private void gameMixed(int gameDiff) {
         boolean turn = random.nextBoolean();// True = gracz False = komputer
 
-        int numberRange = gameNumberRange(gameDiff);
-        int number = random.nextInt(numberRange + 1);
+        int[] numberRange = gameNumberRange(gameDiff);
+        int number = random.nextInt(numberRange[0],numberRange[1]);
         int playerGuess;
         int computerGuess;
         int attempsPlayer = 0;
         int attempsComputer = 0;
-        int computerBound = numberRange;
-        int computerOrigin = 0;
+        int computerBound = numberRange[1];
+        int computerOrigin = numberRange[0];
         boolean gameFlag = true;
         while (gameFlag) {
             if (turn) {
@@ -153,12 +159,12 @@ public class Game {
         }
         if (!turn){
             System.out.println("Gracz zgadł pierwszy w " + attempsPlayer + " probach");
-            player.savePlayerScore(attempsPlayer,4);
-            computer.savePlayerScore(attempsComputer,5);
+            player.savePlayerScore(attempsPlayer,5);
+            computer.savePlayerScore(attempsComputer,6);
         }else {
             System.out.println("komputer zgadł pierwszy w " + attempsPlayer + " probach");
-            computer.savePlayerScore(attempsComputer,4);
-            player.savePlayerScore(attempsPlayer,5);
+            computer.savePlayerScore(attempsComputer,5);
+            player.savePlayerScore(attempsPlayer,6);
 
 
         }
@@ -167,8 +173,8 @@ public class Game {
     public void multiplayerGame(int gameDiff) {
         boolean nextGame =true;
                 while(nextGame) {
-                    int numberRange = gameNumberRange(gameDiff);
-                    int number = random.nextInt(numberRange + 1);
+                    int[] numberRange = gameNumberRange(gameDiff);
+                    int number = random.nextInt(numberRange[0],numberRange[1]);
 
                     boolean win = false;
                     while (!win) {
@@ -182,9 +188,9 @@ public class Game {
                                 Player winner = p;
                                 for (Player playerSave : playerList) {
                                     if (playerSave.equals(winner)) {
-                                        playerSave.savePlayerScore(0, 4);
-                                    } else {
                                         playerSave.savePlayerScore(0, 5);
+                                    } else {
+                                        playerSave.savePlayerScore(0, 6);
                                     }
                                 }
                                 System.out.println("Kolejna gra ?\n 1.tak\n 2.nie");
