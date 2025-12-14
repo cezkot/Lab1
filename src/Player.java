@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 
 public class Player {
-    private String nickname;
+    private final String nickname;
     private int bestScore = 999999999;
     int easy = 999999999;
     int medium = 999999999;
@@ -14,7 +14,10 @@ public class Player {
     int custom = 999999999;
     int win = 0;
     int lose = 0;
-
+    boolean leader = false;
+    boolean mistrz =false;
+    boolean mistrzUsed =false;
+    boolean leaderUsed = false;
     public Player(String nickname) {
         this.nickname = nickname;
         loadPlayerScore();
@@ -77,16 +80,18 @@ public class Player {
                         hard = score;
                     }
                     break;
-                case 4:
+                case 4: // CUSTOM
                     if (score < custom) {
                         custom = score;
                     }
                     break;
-                case 5:
+                case 5: //Multi win
                     win = win + 1;
+                    leader = true;
                     break;
-                case 6:
+                case 6://MUlti lose
                     lose = lose + 1;
+                    leader= false;
                     break;
 
                 default:
@@ -100,6 +105,8 @@ public class Player {
             PrintWriter pw = new PrintWriter(file);
             pw.println("nick=" + nickname);
             pw.println("bestScore=" + bestScore);
+            pw.println("leader="+leader);
+            pw.println("mistrz="+mistrz);
 
             pw.println("single");
             pw.println("easy=" + (easy == 999999999 ? 999999999 : easy));
@@ -123,6 +130,7 @@ public class Player {
         try {
             File file = new File("./" + nickname + ".txt");
             if (!file.exists()) {
+                System.out.println("Brak poprzednik wynikow");
                 return;
             }
 
@@ -151,7 +159,12 @@ public class Player {
                 if (line.startsWith("lose=")) {
                     lose = Integer.parseInt(line.replace("lose=", ""));
                 }
-
+                if (line.startsWith("mistrz=")) {
+                    mistrz = Boolean.parseBoolean(line.replace("mistrz=", ""));
+                }
+                if (line.startsWith("leader=")) {
+                    leader = Boolean.parseBoolean(line.replace("leader=", ""));
+                }
             }
 
             scan.close();
@@ -160,6 +173,14 @@ public class Player {
                 System.out.println("Brak poprzednych wynikow");
             } else {
                 System.out.println("Najlepszy wynik: " + getBestScore());
+            }
+            if(mistrz)
+            {
+                System.out.println("Mistrz");
+            }
+            if(leader)
+            {
+                System.out.println("Leader");
             }
         } catch (Exception e) {
             System.out.println("Błąd odczytu danych gracza!");

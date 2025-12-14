@@ -172,7 +172,7 @@ public class Game {
 
     public void multiplayerGame(int gameDiff) {
         boolean nextGame =true;
-                while(nextGame) {
+
                     int[] numberRange = gameNumberRange(gameDiff);
                     int number = random.nextInt(numberRange[0],numberRange[1]);
 
@@ -181,6 +181,11 @@ public class Game {
                         for (Player p : playerList) {
                             System.out.println(p.getNickname() + " zgaduje:");
                             int guess = gamePlayerGuessing(number);
+                            if(p.leader && !p.leaderUsed && guess != number){
+                                System.out.println("Ledaer zgaduje 2 razy na poczatku");
+                                guess = gamePlayerGuessing(number);
+                                p.leaderUsed = true;
+                            }
                             if (guess == number) {
                                 System.out.println("Zwycięzca: " + p.getNickname());
 
@@ -193,18 +198,22 @@ public class Game {
                                         playerSave.savePlayerScore(0, 6);
                                     }
                                 }
-                                System.out.println("Kolejna gra ?\n 1.tak\n 2.nie");
-                                nextGame = switch (scanner.nextInt()) {
-                                    case 1 -> true;
-                                    case 2 -> false;
-                                    default -> false;
-                                };
                                 break;
                             }
                         }
 
                     }
-                }
+
+    }
+
+    public void  multiplayerGameBoN(int gameDiff)
+    {
+       System.out.println("Best of ...\n ");
+       int BestOfN = scanner.nextInt();
+       for (int i =0; i<BestOfN;i++)
+       {
+
+       }
     }
 
     //Wyodrebniona funkcja która pokazuje czy liczba jest mniejsza czy wieksza itd.

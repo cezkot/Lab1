@@ -39,23 +39,30 @@ void main() {
                 System.out.println("3: 0-1000000");
                 System.out.println("4: Wlasny zakres");
                 gameDiff = scanner.nextInt();
-                if(gameType == 4)
-                {
+                if (gameType == 4) {
                     List<Player> playerList = new ArrayList<>();
                     System.out.println("Ile ma grać graczy");
                     int playerCount = scanner.nextInt();
                     scanner.nextLine();
-                    for(int i = 0; i<playerCount;i++)
-                    {
+                    for (int i = 0; i < playerCount; i++) {
                         System.out.println("Podaj nick: ");
                         String nicknameMulti = scanner.nextLine();
                         playerList.add(new Player(nicknameMulti));
                     }
+
+
                     Game gameMulti = new Game(playerList);
-                    gameMulti.start(gameType,gameDiff);
-                }
-                else
-                {
+                    boolean GameAgain = true;
+                    while (GameAgain) {
+                        gameMulti.start(gameType, gameDiff);
+                        System.out.println("Kolejna gra ?\n 1.tak\n 2.nie");
+                        GameAgain = switch (scanner.nextInt()) {
+                            case 1 -> true;
+                            case 2 -> false;
+                            default -> false;
+                        };
+                    }
+                } else {
                     game.start(gameType, gameDiff);
                 }
 
