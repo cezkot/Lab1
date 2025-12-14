@@ -31,6 +31,9 @@ public class Game {
                 break;
             case 4:
                 multiplayerGame(gameDiff);
+                break;
+            case 5:
+                multiplayerGameBoN(gameDiff);
         }
     }
 
@@ -209,11 +212,62 @@ public class Game {
     public void  multiplayerGameBoN(int gameDiff)
     {
        System.out.println("Best of ...\n ");
-       int BestOfN = scanner.nextInt();
+        int BestOfN = -1;
+       BestOfN = scanner.nextInt();
+       while((BestOfN < 1) || (BestOfN%2==0))
+       {
+           System.out.println("Liczba gier musi być większa od 0 i być nieparzysta\n ");
+           BestOfN = scanner.nextInt();
+       }
        for (int i =0; i<BestOfN;i++)
        {
-
+           int[] numberRange = gameNumberRange(gameDiff);
+           int number = random.nextInt(numberRange[0],numberRange[1]);
+           boolean round = true;
+           while (round) {
+               System.out.println("Gra:" + i + 1);
+               for (Player p : playerList) {
+                   System.out.println(p.getNickname() + " zgaduje:");
+                   int guess = gamePlayerGuessing(number);
+                   if (p.mistrz && !p.mistrzUsed && guess != number) {
+                       System.out.println("mistrz zgaduje 2 razy na poczatku");
+                       guess = gamePlayerGuessing(number);
+                       p.mistrzUsed = true;
+                   }
+                   if (guess == number) {
+                       System.out.println("Zwycięzca rundy" + i + 1 + " " + p.getNickname());
+                       p.BestOfNWins += 1;
+                       round = false;
+                       break;
+                   }
+               }
+           }
        }
+       if(maxValueIsMoreThanOnce(playerList))
+       {
+           System.out.println("Brak zwyciężców conajmnie 2 graczy zajelo 1 pierwsze miejsce");
+           return;
+       }
+       Player winner = playerList.get(0);
+        for (Player p : playerList)
+        {
+            if(p.BestOfNWins > winner.BestOfNWins)
+            {
+                winner = p;
+            }
+        }
+        for(Player p : playerList)
+        {
+            if(p.equals(winner))
+            {
+                System.out.println("Wygrał gracz: " + p.getNickname());
+                p.savePlayerScore(0, 7);
+            }
+            else
+            {
+                p.savePlayerScore(0,8);
+            }
+        }
     }
 
     //Wyodrebniona funkcja która pokazuje czy liczba jest mniejsza czy wieksza itd.
@@ -231,5 +285,27 @@ public class Game {
         }
 
         return guess;
+    }
+
+    private boolean maxValueIsMoreThanOnce(List<Player> playerList)
+    {
+     int max = 0;
+     int ilosc = 0;
+
+     for(Player p : playerList)
+     {
+         if(p.BestOfNWins>max)
+         {
+             max = p.BestOfNWins;
+             ilosc = 1;
+         } else if (p.BestOfNWins == max) {
+            ilosc ++;
+            if(ilosc >= 2)
+            {
+                return true;
+            }
+         }
+     }
+     return false;
     }
 }

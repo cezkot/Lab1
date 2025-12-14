@@ -32,6 +32,7 @@ void main() {
                 System.out.println("2: odwrotna");
                 System.out.println("3: mieszana");
                 System.out.println("4: multiplayer");
+                System.out.println("5: multiplayer turniejowy");
                 gameType = scanner.nextInt();
                 System.out.println("Podaj poziom trudnosci");
                 System.out.println("1: 0-100");
@@ -39,7 +40,7 @@ void main() {
                 System.out.println("3: 0-1000000");
                 System.out.println("4: Wlasny zakres");
                 gameDiff = scanner.nextInt();
-                if (gameType == 4) {
+                if (gameType == 4 || gameType == 5) {
                     List<Player> playerList = new ArrayList<>();
                     System.out.println("Ile ma grać graczy");
                     int playerCount = scanner.nextInt();

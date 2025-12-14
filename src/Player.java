@@ -18,6 +18,7 @@ public class Player {
     boolean mistrz =false;
     boolean mistrzUsed =false;
     boolean leaderUsed = false;
+    int BestOfNWins=0;
     public Player(String nickname) {
         this.nickname = nickname;
         loadPlayerScore();
@@ -92,6 +93,14 @@ public class Player {
                 case 6://MUlti lose
                     lose = lose + 1;
                     leader= false;
+                    break;
+                case 7:
+                    win = win + 1;
+                    mistrz = true;
+                    break;
+                case 8:
+                    lose = lose + 1;
+                    mistrz = false;
                     break;
 
                 default:
@@ -171,8 +180,6 @@ public class Player {
             System.out.println("Wyniki gracza : " + this.nickname);
             if (bestScore == 999999999 || bestScore == -1) {
                 System.out.println("Brak poprzednych wynikow");
-            } else {
-                System.out.println("Najlepszy wynik: " + getBestScore());
             }
             if(mistrz)
             {
