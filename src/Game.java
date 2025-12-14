@@ -182,7 +182,8 @@ public class Game {
                     boolean win = false;
                     while (!win) {
                         for (Player p : playerList) {
-                            System.out.println(p.getNickname() + " zgaduje:");
+                            System.out.println("--------------------------------------------------------------------------------");
+                            System.out.println(p.getNickname() + " zgaduje: ");
                             int guess = gamePlayerGuessing(number);
                             if(p.leader && !p.leaderUsed && guess != number){
                                 System.out.println("Ledaer zgaduje 2 razy na poczatku");
@@ -221,12 +222,14 @@ public class Game {
        }
        for (int i =0; i<BestOfN;i++)
        {
+           System.out.println("#####################################################################################");
+           System.out.println("                               RUNDA:" +(i+1)  );
            int[] numberRange = gameNumberRange(gameDiff);
            int number = random.nextInt(numberRange[0],numberRange[1]);
            boolean round = true;
            while (round) {
-               System.out.println("Gra:" + i + 1);
                for (Player p : playerList) {
+                   System.out.println("-----------------------------------------------------------------------------------");
                    System.out.println(p.getNickname() + " zgaduje:");
                    int guess = gamePlayerGuessing(number);
                    if (p.mistrz && !p.mistrzUsed && guess != number) {
@@ -235,13 +238,15 @@ public class Game {
                        p.mistrzUsed = true;
                    }
                    if (guess == number) {
-                       System.out.println("Zwycięzca rundy" + i + 1 + " " + p.getNickname());
+                       System.out.println("Zwycięzca rundy" + (i + 1) + " " + p.getNickname());
                        p.BestOfNWins += 1;
                        round = false;
                        break;
                    }
                }
            }
+           System.out.println("#####################################################################################");
+           System.out.println("##################################Koniec Gry#########################################");
        }
        if(maxValueIsMoreThanOnce(playerList))
        {

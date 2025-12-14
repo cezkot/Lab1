@@ -89,6 +89,7 @@ public class Player {
                 case 5: //Multi win
                     win = win + 1;
                     leader = true;
+                    leaderUsed = false;
                     break;
                 case 6://MUlti lose
                     lose = lose + 1;
@@ -97,6 +98,7 @@ public class Player {
                 case 7:
                     win = win + 1;
                     mistrz = true;
+                    mistrzUsed = false;
                     break;
                 case 8:
                     lose = lose + 1;
@@ -177,7 +179,6 @@ public class Player {
             }
 
             scan.close();
-            System.out.println("Wyniki gracza : " + this.nickname);
             if (bestScore == 999999999 || bestScore == -1) {
                 System.out.println("Brak poprzednych wynikow");
             }
