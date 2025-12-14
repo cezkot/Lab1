@@ -143,7 +143,7 @@ public class Player {
                     hard = Integer.parseInt(line.replace("hard=", ""));
                 }
                 if (line.startsWith("custom=")) {
-                    custom = Integer.parseInt(line.replace("custom", ""));
+                    custom = Integer.parseInt(line.replace("custom=", ""));
                 }
                 if (line.startsWith("win=")) {
                     win = Integer.parseInt(line.replace("win=", ""));
